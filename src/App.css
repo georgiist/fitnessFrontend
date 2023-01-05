@@ -1,0 +1,41 @@
+.list {
+  max-width: 80%;
+  margin: auto;
+}
+
+.list li {
+  margin-left: 5%
+}
+
+.list h6 {
+  margin-bottom: 5%;
+}
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 0.3%;
+  color: white;
+  text-align: center;
+}
+
+.submit-form {
+  max-width: 300px;
+  margin: auto;
+}
+
+.edit-form {
+  max-width: 50%;
+  margin: auto;
+}
+
+.edit-form h4 {
+  text-align: center;
+}
+
+
+
+.edit-form select {
+  margin: 10px;
+  width: auto;
+}
