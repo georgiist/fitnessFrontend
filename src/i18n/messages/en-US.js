@@ -23,6 +23,109 @@ export default {
         "somethingWrong": "Something went wrong...",
         "metres": "metres",
         "cantimetres": "cantimetres",
-        "dietsText": "dietsText"
+        "dietsText": "dietsText",
+        "wantToHelp": "I want to help anyone who wants to lead a more active and healthy lifestyle. I try to help everyone, whether you are a beginner or advanced.",
+        "suitable": "This website will be suitable for you if you want to find answers to the following questions:",
+        "q1": "How do I start exercising?",
+        "q2": "How to gain muscle mass?",
+        "q3": "How to get clean and get muscles?",
+        "q4": "How to lose weight?",
+        "q5": "What foods should I avoid and how can I eat healthier?",
+        "q6": "How can I be stronger and more energetic?",
+        "goal": "My goal is not to impose my opinion on you. I'm not one to chase you with flyers and hints about how you should eat this and not that. My purpose is to give you knowledge, to show you the door, and whether you enter through it, and which door you choose, is entirely up to you.",
+        "experience": "The articles here are a mix of my experience and knowledge in fitness and useful information from the scientific research in the fields of training and nutrition from leading figures.",
+        "notLying": "I am not going to lie to you about that if you want to lose weight or gain weight, you must definitely buy (preferably from me) this or that nutritional supplement.",
+        "firstPlace": "For me, in the first place it has always been the building of a good knowledge base related to proper nutrition and lifestyle, nutritional supplements come after that, and it is still quite easy to do it without them. I want to help anyone who wants to lead a more active and healthy lifestyle. I try to help everyone, whether you are a beginner or advanced.",
+        "thankYou": "Thank you! I hope that you will find useful information and valuable help on my site, no matter what your fitness goals are at this stage.",
+        "titleTable1": "Eating in a gym day",
+        "ulStrongTable1": "Total daily intake:",
+        "ulTable1": "2030 kcal, 137 g protein, 241 g carbohydrates, 54 g fat, 40 g fiber",
+
+        "titleTable2": "Eating in a rest day",
+        "ulStrongTable2": "Total daily intake:",
+        "ulTable2": "2017 kcal, 132 g protein, 246 g carbohydrates, 53 g fat, 34 g fiber",
+        "menu": "Daily Menu",
+        "food": "Food",
+        "breakfast": "Breakfast",
+        "snacking": "Snacking",
+        "lunch": "Lunch",
+        "dinner": "Dinner",
+
+        "breakfastItem1.1": " ",
+        "breakfastItemHref1.1": "Oats",
+        "breakfastItemHref1.2": "protein",
+        "breakfastItemHref1.3": "peanut butter ",
+        "breakfastItemHref1.4": "syrup",
+        "breakfastItem1.2": "(50 g),",
+        "breakfastItem1.3": " (vegan/whey 30 g),",
+        "breakfastItem1.4": "(20 g), banana (100 g), chocolate",
+        "breakfastItem1.5": "without mud (10 g)",
+
+        "snackingItem1.1": "Skimmed yogurt (140 g), tangerine (100 g),",
+        "snackingItemHref1.1": "crunchy muesli ",
+        "snackingItem1.1.2": "(25 g)",
+
+        //todo
+        "snackingItem1.2": "Crunchy bread (40 g), cottage cheese (100 g), carrot (100 g)",
+        "lunchItem1": "Къри с пиле (150 g), олио (5 g), ориз (70 g), зеленчуци на пара (150 g) в олио (5 g)",
+        "dinnerItem": "Pasta (70 g) with tuna in its own sauce (90 g),  tomato sauce (150 g), rapeseed oil (10 g)",
+
+        "breakfastItem2.1": "Scrambled eggs (1 egg + 25 g ",
+        "breakfastItemHref2.1": "egg whites",
+        "breakfastItemHref2.2": "ghee oil",
+
+        "breakfastItem2.2": ") with green beans (100 g), cooked in ",
+        "breakfastItem2.3": " (10 g), rye bread (100 g)",
+
+        "snackingItem2.1": "Chocolate ",
+        "snackingItemHref2.1": "Milkshake",
+        "snackingItem2.2": " (1), grapes (150 g)",
+
+        "snackingItemHref2.2": "Rice porridge ",
+        "snackingItem2.2.2": "(50 g) with protein (25 g) and raspberries (50 g)",
+        "lunchItem2": "Bulgur (70 g) with tofu (natural 150 g), steamed zucchini and tomatoes (150 g) with olive oil (10 g)",
+
+        "dinnerItem2.1": "Cream of sardines (",
+        "dinnerItemHref2.1": "sardines",
+        "dinnerItem2.2": " in their own sauce (90 g), butter (10 g), mustard (5 g), onion, salt and pepper to taste), rye bread (80 g), red pepper (100 g)",
+
+        "monday": "Monday:",
+        "tuesday": "Tuesday:",
+        "wednesday": "Wednesday:",
+        "thursday": "Thursday:",
+        "friday": "Friday:",
+        "saturday": "Saturday:",
+        "sunday": "Sunday:",
+
+        "monday1": "Chest + Shoulders",
+        "tuesday1": "Back",
+        "thursday1": "Legs + Belly",
+        "friday1": "Arms",
+
+        "monday2": "Chest + Triceps + Stomach",
+        "tuesday2": "Back + Biceps",
+        "wednesday2": "Legs + Belly",
+        "friday2": "Shoulders",
+        "saturday2": "Arms",
+
+        "monday3": "Chest + Back + Shoulders",
+        "tuesday3": "Legs + Belly",
+        "thursday3": "Chest + Back + Shoulders",
+        "friday3": "Legs + Belly",
+
+        "monday4": "Chest + Triceps + Front Shoulder + Middle Shoulder",
+        "tuesday4": "Back + Biceps + Back Shoulder",
+        "wednesday4": "Legs + Belly",
+        "thursday4": "Chest",
+        "friday4": "Legs",
+        "saturday4": "Arms",
+        "theTrainer": "The exerciser can always change one of the exercises to another if he wants to emphasize a certain muscle group.",
+
+        "forBeginners": "FOR BEGINNERS",
+        "forAdvanced": "FOR ADVANCED",
+        "balanced": "BALANCED PROGRAM",
+        "muscleGaining": "GAINING MUSCLE WEIGHT",
+        "rest": "//Rest//"
+
     }
 }

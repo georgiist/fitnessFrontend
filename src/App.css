@@ -7,6 +7,88 @@
   margin-left: 5%
 }
 
+.wp-block-table {
+  margin: 0 0 1em;
+  overflow-x: auto;
+  border-collapse: collapse;
+
+}
+
+.wp-block-table .has-fixed-layout {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.wp-block-table p{
+  margin: auto;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+td {
+  margin: auto;
+  padding: 10px;
+  font-size: medium;  
+  color: grey;
+  font-weight: bold;
+  text-align: center;
+}
+a{
+  color: #0FFF50;
+}
+.items{
+  width: 100%; 
+  overflow: hidden;
+  padding: 10px;
+  text-align: center;
+}
+
+.left{
+  width: 600px; 
+  display: table-cell;
+}
+
+.noneBullets{
+  list-style-type: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.noneBullets strong{
+  color:#0FFF50;
+}
+.noneBullets li{
+  margin-bottom: 5px;
+}
+.center{
+  text-align: center;
+}
+.right{
+  display: table-cell;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+  background-color: #0FFF50;
+}
+figure {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 40px;
+  margin-inline-end: 40px;
+}
+.has-fixed-layout {
+  table-layout: fixed;
+  width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
 .list h6 {
   margin-bottom: 5%;
 }
