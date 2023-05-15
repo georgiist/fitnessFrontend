@@ -125,7 +125,15 @@ export default {
         "forAdvanced": "FOR ADVANCED",
         "balanced": "BALANCED PROGRAM",
         "muscleGaining": "GAINING MUSCLE WEIGHT",
-        "rest": "//Rest//"
+        "rest": "//Rest//",
 
+        "login": "Login",
+        "logout": "Logout",
+        "email": "Email:",
+        "password": "Password:",
+        "repeatPassword": "Repeat your password:",
+        "signUp": "Sign up",
+        "firstName": "First name:",
+        "lastName": "Last name:"
     }
 }

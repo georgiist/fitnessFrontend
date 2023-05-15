@@ -124,7 +124,15 @@ export default {
         "forAdvanced": "ЗА НАПРЕДНАЛИ",
         "balanced": "БАЛАНСИРАНА ПРОГРАМА",
         "muscleGaining": "ПОКАЧВАНЕ НА МУСКУЛНА МАСА",
-        "rest": "//Почивка//"
+        "rest": "//Почивка//",
 
+        "login": "Вход",
+        "logout": "Изход",
+        "email": "Имейл:",
+        "password": "Парола:",
+        "repeatPassword": "Повторете вашата парола:",
+        "signUp": "Регистрация",
+        "firstName": "Име:",
+        "lastName": "Фамилия:"
     }
 }

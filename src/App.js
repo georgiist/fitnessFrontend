@@ -11,6 +11,8 @@ import SendEmailComponent from "./components/sendEmail.component";
 
 import { I18nProvider, LOCALES } from "./i18n";
 import translate from "./i18n/translate";
+import LoginComponent from "./components/login.component";
+import SignUpComponent from "./components/signUp.component";
 
 
 function App() {
@@ -57,6 +59,16 @@ function App() {
                 {translate("contacts")}
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to={"/login"} className="nav-link">
+                {translate("login")}
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/signUp"} className="nav-link">
+                {translate("signUp")}
+              </Link>
+            </li>
           </div>
           <div >
             <select id="languageSelector" onChange={onChangeLanuage}>
@@ -73,7 +85,8 @@ function App() {
             <Route exact path="/diets" component={DietsComponent} />
             <Route path="/calculator" component={CalculatorComponent} />
             <Route path="/sendEmail" component={SendEmailComponent} />
-
+            <Route path="/login" component={LoginComponent} />
+            <Route path="/signUp" component={SignUpComponent} />
           </Switch>
         </div>
         <div className="footer bg-dark">
