@@ -1,217 +1,211 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 import translate from "../i18n/translate";
-import FitnessService from "../services/fitness.service";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
-export default class SignUpComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-    this.onChangeRepeatedPassword = this.onChangeRepeatedPassword.bind(this);
-    this.onChangeFirstName = this.onChangeFirstName.bind(this);
-    this.onChangeLastName = this.onChangeLastName.bind(this);
+const SignUpComponent = () => {
+  const [newUser, setNewUser] = useState({
+    email: "",
+    password: "",
+    repeatedPassword: "",
+    firstName: "",
+    lastName: "",
+    gender: "",
+    profileImage: "",
+  });
+  const navigate = useNavigate();
 
-    this.onSignUp = this.onSignUp.bind(this);
-    this.onClean = this.onClean.bind(this);
+  const { signUp } = useContext(AuthContext);
+  // const [error, setError] = useState(undefined);
 
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser((prev) => ({ ...prev, [name]: value }));
+  };
 
-    this.state = {
-      measure: "",
-      currentUser: {
-        email: "",
-        password: "",
-        repeatedPassword: "",
-        firstName: "",
-        lastName: ""
-      },
-      message: ""
+  const onChangeGender = (e) => {
+    const { id } = e.currentTarget;
+    setNewUser((prev) => ({ ...prev, gender: id }));
+  };
+  const clean = () => {
+    setNewUser({
+      email: "",
+      password: "",
+      repeatedPassword: "",
+      firstName: "",
+      lastName: "",
+      gender: "",
+      profileImage: "",
+    });
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("repeatedPassword").value = "";
+    document.getElementById("firstName").value = "";
+    document.getElementById("lastName").value = "";
+    document.getElementById("male").checked = false;
+    document.getElementById("female").checked = false;
+    document.getElementById("fileReader").value = "";
+  };
+
+  const onChangeImage = (e) => {
+    const reader = new FileReader();
+    reader.readAsBinaryString(e);
+    reader.onload = function () {
+      setNewUser((prev) => ({ ...prev, profileImage: btoa(reader.result) }));
     };
-  }
-  onChangePassword(e) {
-    const password = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentUser: {
-          ...prevState.currentUser,
-          password: password
-        }
-      };
-    });
-  }
+  };
 
-  onChangeRepeatedPassword(e) {
-    const repeatedPassword = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentUser: {
-          ...prevState.currentUser,
-          repeatedPassword: repeatedPassword
-        }
-      };
-    });
-  }
+  const onSignUp = async (e) => {
+    e.preventDefault();
 
-  onChangeEmail(e) {
-    const email = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentUser: {
-          ...prevState.currentUser,
-          email: email
-        }
-      };
-    });
-  }
+    let data = {
+      email: newUser.email,
+      password: newUser.password,
+      repeatedPassword: newUser.repeatedPassword,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      gender: newUser.gender,
+      profileImage: newUser.profileImage,
+    };
 
-  onChangeFirstName(e) {
-    const firstName = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentUser: {
-          ...prevState.currentUser,
-          firstName: firstName
-        }
-      };
-    });
-  }
-  onChangeLastName(e) {
-    const lastName = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentUser: {
-          ...prevState.currentUser,
-          lastName: lastName
-        }
-      };
-    });
-  }
-
-  onSignUp() {
-    if (this.state.currentUser.email !== "" && this.state.currentUser.password !== "" && this.state.currentUser.repeatedPassword && this.state.currentUser.firstName && this.state.currentUser.lastName) {
+    if (
+      data.email !== "" &&
+      data.password !== "" &&
+      data.repeatedPassword !== "" &&
+      data.firstName !== "" &&
+      data.lastName !== "" &&
+      data.gender !== ""
+    ) {
       if (
-        !this.state.currentUser.email.match(
+        !data.email.match(
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         )
       ) {
-        alert("Wrong email format!")
+        alert("Wrong email format!");
       } else {
-        if (this.state.currentUser.password === this.state.currentUser.repeatedPassword) {
-          FitnessService.signUp(this.state.currentUser)
-            .then(response => {
-              alert("Signed up successfully!");
-            });
+        if (data.password === data.repeatedPassword) {
+          await signUp(data);
+          navigate("/login");
         } else {
-          alert("Passwords are not equal!")
+          alert("Passwords are not equal!");
         }
-
       }
     } else {
-      alert("You have not entered everything!")
+      alert("You have not entered everything!");
     }
-  }
+  };
 
-  onClean() {
-    this.setState(function (prevState) {
+  return (
+    <div className="edit-form">
+      <form>
+        <div>
+          <label>{translate("profileImage")}:</label>
+          <img
+            hidden={newUser.profileImage !== "" ? "" : "hidden"}
+            className="profileImage"
+            src={`data:image/jpeg;base64,${newUser.profileImage}`}
+            alt="Profile"
+          />
+          <br></br>
 
-      return {
-        currentUser: {
-          ...prevState.currentUser,
-          email: "",
-          password: "",
-          repeatedPassword: "",
-          firstName: "",
-          lastName: ""
-        }
-      };
-    });
-  }
+          <input
+            id="fileReader"
+            type="file"
+            name="profileImage"
+            onChange={(event) => {
+              onChangeImage(event.target.files[0]);
+            }}
+          />
+        </div>
 
-  render() {
-    const { currentUser } = this.state;
+        <div className="form-group">
+          <label htmlFor="firstName">{translate("firstName")} </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            name="firstName"
+            onChange={onChange}
+          />
+        </div>
 
-    return (
-      <div>
-        {currentUser ? (
-          <div className="edit-form">
-            <form>
-              <div className="form-group">
-                <label htmlFor="description">{translate("firstName")} </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subject"
-                  value={currentUser.firstName}
-                  onChange={this.onChangeFirstName}
-                />
-              </div>
+        <div className="form-group">
+          <label htmlFor="lastName">{translate("lastName")} </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            name="lastName"
+            onChange={onChange}
+          />
+        </div>
 
-              <div className="form-group">
-                <label htmlFor="description">{translate("lastName")} </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subject"
-                  value={currentUser.lastName}
-                  onChange={this.onChangeLastName}
-                />
-              </div>
+        <div className="form-group">
+          <label htmlFor="email">{translate("email")}</label>
+          <input
+            type="text"
+            className="form-control"
+            id="email"
+            name="email"
+            onChange={onChange}
+          />
+        </div>
 
-              <div className="form-group">
-                <label htmlFor="title">{translate("email")}</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="title"
-                  value={currentUser.email}
-                  onChange={this.onChangeEmail}
-                />
-              </div>
+        <div className="form-group">
+          <label htmlFor="password">{translate("password")} </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            name="password"
+            onChange={onChange}
+          />
+        </div>
 
-              <div className="form-group">
-                <label htmlFor="description">{translate("password")} </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subject"
-                  value={currentUser.password}
-                  onChange={this.onChangePassword}
-                />
-              </div>
+        <div className="form-group">
+          <label htmlFor="repeatedPassword">
+            {translate("repeatPassword")}{" "}
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="repeatedPassword"
+            name="repeatedPassword"
+            onChange={onChange}
+          />
+        </div>
 
-              <div className="form-group">
-                <label htmlFor="description">{translate("repeatPassword")} </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subject"
-                  value={currentUser.repeatedPassword}
-                  onChange={this.onChangeRepeatedPassword}
-                />
-              </div>
-            </form>
+        <div className="form-group">
+          <label htmlFor="gender">{translate("gender")}:</label>
+          <br></br>
+          <input
+            type="radio"
+            id="male"
+            name="gender"
+            onChange={onChangeGender}
+          />
+          <label htmlFor="male">{translate("male")} </label>
+          <br></br>
+          <input
+            type="radio"
+            id="female"
+            name="gender"
+            onChange={onChangeGender}
+          />
+          <label htmlFor="female">{translate("female")} </label>
+          <br></br>
+        </div>
+      </form>
 
+      <button className="badge badge-danger mr-2" onClick={onSignUp}>
+        {translate("signUp")}{" "}
+      </button>
 
-            <button
-              className="badge badge-danger mr-2"
-              onClick={this.onSignUp}
-            >{translate("signUp")}            </button>
+      <button type="submit" className="badge badge-success" onClick={clean}>
+        {translate("resetBtn")}
+      </button>
+    </div>
+  );
+};
 
-            <button
-              type="submit"
-              className="badge badge-success"
-              onClick={this.onClean}
-            >
-              {translate("resetBtn")}
-            </button>
-
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>{translate("somethingWrong")}</p>
-          </div>
-        )}
-      </div>
-    );
-  }
-}
+export default SignUpComponent;

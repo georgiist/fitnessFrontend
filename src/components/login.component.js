@@ -1,130 +1,110 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 import translate from "../i18n/translate";
-import FitnessService from "../services/fitness.service";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
-export default class LoginComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-    this.onLogin = this.onLogin.bind(this);
-    this.onClean = this.onClean.bind(this);
+const LoginComponent = () => {
+  const [profile, setProfile] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
 
+  const { login } = useContext(AuthContext);
+  const [error, setError] = useState(undefined);
 
-    this.state = {
-      measure: "",
-      currentUser: {
-        email: "",
-        password: "",
-      },
-      message: ""
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prev) => ({ ...prev, [name]: value }));
+  };
+  const clean = () => {
+    setProfile({
+      email: "",
+      password: "",
+    });
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
+    setError(undefined);
+  };
+
+  const onLogin = async (e) => {
+    e.preventDefault();
+    let data = {
+      email: profile.email,
+      password: profile.password,
     };
-  }
-  onChangePassword(e) {
-    const password = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentUser: {
-          ...prevState.currentUser,
-          password: password
-        }
-      };
-    });
-  }
 
+    const hasError = data.email === "" || data.password === "";
 
-
-  onChangeEmail(e) {
-    const email = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentUser: {
-          ...prevState.currentUser,
-          email: email
-        }
-      };
-    });
-  }
-
-  onLogin() {
-    if (this.state.currentUser.email !== "" && this.state.currentUser.password !== "") {
-      FitnessService.login(this.state.currentUser)
-        .then(response => {
-          alert("Logged in successfully!");
-        })
-        .catch((error) => {
-          alert(error.response.data.error)
-        });
-    } else {
-      alert("You have not entered anything!")
+    hasError
+      ? setError("You have not entered the required data!")
+      : setError(undefined);
+    if (!hasError) {
+      try {
+        await login(data);
+        navigate("/profile");
+        // setError(undefined);
+      } catch (error) {
+        console.log(error);
+        // alert(error.response.data.error);
+        // setError(error.response.data.error);
+      }
     }
-  }
+  };
 
-  onClean() {
-    this.setState(function (prevState) {
+  return (
+    <div className="edit-form">
+      <h4>{translate("login")}</h4>
+      <div className="form">
+        <div className="form-group">
+          <label htmlFor="title">{translate("emailSenderTitle")}</label>
+          <input
+            type="text"
+            className="form-control"
+            id="email"
+            name="email"
+            onChange={onChange}
+          />
+        </div>
 
-      return {
-        currentBMI: {
-          ...prevState.currentBMI,
-          weight: "",
-          height: "",
-        }
-      };
-    });
-  }
+        <div className="form-group">
+          <label htmlFor="description">{translate("password")}</label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            name="password"
+            onChange={onChange}
+          />
 
-  render() {
-    const { currentUser } = this.state;
-    return (
-      <div>
-        {currentUser ? (
-          <div className="edit-form">
-            <form>
-              <div className="form-group">
-                <label htmlFor="title">{translate("email")}</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="title"
-                  value={currentUser.email}
-                  onChange={this.onChangeEmail}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="description">{translate("password")} </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subject"
-                  value={currentUser.password}
-                  onChange={this.onChangePassword}
-                />
-              </div>
-            </form>
-
-
-            <button
-              className="badge badge-danger mr-2"
-              onClick={this.onLogin}
-            >{translate("login")}            </button>
-
-            <button
-              type="submit"
-              className="badge badge-success"
-              onClick={this.onClean}
-            >
-              {translate("resetBtn")}
+          <div style={{ marginTop: "5%" }}>
+            {/* <img
+              hidden={error ? "" : "hidden"}
+              width="5%"
+              src={errorIcon}
+              alt="Error"
+              style={{
+                float: "left",
+                display: "inline",
+                width: "5%",
+                marginRight: "3%",
+              }}
+            /> */}
+            <p>{error}</p>
+          </div>
+          <div className="buttons">
+            <button onClick={onLogin}  className="badge badge-danger mr-2">
+              {translate("login")}
             </button>
 
+            <button onClick={clean} className="badge badge-success">
+              {translate("resetBtn")}
+            </button>
           </div>
-        ) : (
-          <div>
-            <br />
-            <p>{translate("somethingWrong")}</p>
-          </div>
-        )}
+        </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default LoginComponent;

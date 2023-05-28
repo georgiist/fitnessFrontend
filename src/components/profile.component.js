@@ -1,138 +1,391 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import translate from "../i18n/translate";
+import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
+import FitnessService from "../services/fitness.service";
+import profileIcon from "../../src/profileIcon.jpeg";
+const ProfileComponent = () => {
+  const { currentUser, logout } = useContext(AuthContext);
 
-export default class ProfileComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-    this.onLogin = this.onLogin.bind(this);
-    this.onClean = this.onClean.bind(this);
+  const [user, setUser] = useState({});
+  const [programRequests, setProgramRequests] = useState([]);
 
+  const [profileImageSrc, setProfileImageSrc] = useState({});
 
-    this.state = {
-      measure: "",
-      currentBMI: {
-        height: "",
-        weight: "",
-      },
-      message: ""
-    };
-  }
-  onChangePassword(e) {
-    const height = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentBMI: {
-          ...prevState.currentBMI,
-          height: height
-        }
-      };
-    });
-  }
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    getUserData();
+    getProgramRequests();
+  }, []);
 
-
-  onChangeEmail(e) {
-    const weight = e.target.value;
-    this.setState(function (prevState) {
-      return {
-        currentBMI: {
-          ...prevState.currentBMI,
-          weight: weight
-        }
-      };
-    });
-  }
-
-  onLogin() {
-    let measure = this.state.measure;
-    if (this.state.currentBMI.weight !== "" && this.state.currentBMI.height !== "") {
-      let height;
-      let isValid = true;
-      if (measure === "metres") {
-        if (this.state.currentBMI.height > 3) {
-          isValid = false;
-          alert("Не сте въвели вярна височина")
-        } else {
-          height = this.state.currentBMI.height;
-        }
-      } 
-      let bmi = this.state.currentBMI.weight / (height * height);
-      if (isValid) {
-        alert(`Your BMI is: ${bmi.toFixed(2)}`)
-      }
-    } else {
-      alert("You have not entered anything!")
+  const formatDate = (timestamp) => {
+    if (timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleString("en-GB");
     }
-  }
+  };
 
-  onClean() {
-    this.setState(function (prevState) {
-
-      return {
-        currentBMI: {
-          ...prevState.currentBMI,
-          weight: "",
-          height: "",
-        }
-      };
+  const getUserData = () => {
+    FitnessService.getUserData({
+      currentUserEmail: currentUser?.email,
+    }).then((response) => {
+      setUser(response.data);
+      setProfileImageSrc(
+        response.data.profileImage
+          ? `data:image/jpeg;base64,${response.data.profileImage}`
+          : profileIcon
+      );
     });
-  }
+  };
 
-  render() {
-    const { currentBMI } = this.state;
+  const getProgramRequests = () => {
+    FitnessService.getProgramRequests().then((response) => {
+      setProgramRequests(response.data || []);
+    });
+  };
 
-    return (
+  const onAddNewDiet = (id) => {
+    navigate(`/newProgram/${id}`);
+  };
+
+  const onCreateRequest = () => {
+    navigate(`/createRequest`);
+  };
+
+  const onLogout = async (e) => {
+    e.preventDefault();
+    await logout();
+    navigate("/login");
+  };
+
+  return (
+    <div>
       <div>
-        {currentBMI ? (
-          <div className="edit-form">
-            <form>
-              <div className="form-group">
-                <label htmlFor="title">{translate("email")}</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="title"
-                  value={currentBMI.weight}
-                  onChange={this.onChangeWeight}
-                />
-              </div>
+        <img className="profileImage" src={profileImageSrc} alt="Profile" />
+        <h2 className="profileCenter">
+          {user.firstName} {user.lastName}
+        </h2>
+        <h4 className="profileCenter">
+          <button className="badge badge-danger mr-2" onClick={onLogout}>
+            {translate("logout")}{" "}
+          </button>
+        </h4>
 
-              <div className="form-group">
-                <label htmlFor="description">{translate("password")} </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subject"
-                  value={currentBMI.height}
-                  onChange={this.onChangePassword}
-                />
-              </div>
-            </form>
-
-
-            <button
-              className="badge badge-danger mr-2"
-              onClick={this.onCalculate}
-            >{translate("login")}            </button>
-
-            <button
-              type="submit"
-              className="badge badge-success"
-              onClick={this.onClean}
-            >
-              {translate("resetBtn")}
-            </button>
-
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>{translate("somethingWrong")}</p>
-          </div>
-        )}
+        <br></br>
       </div>
-    );
-  }
-}
+      <h4 className="profileCenter">
+        <button
+          hidden={
+            !user.diets && !user.hasSentRequest && !user.isAdmin ? "" : "hidden"
+          }
+          className=""
+          onClick={onCreateRequest}
+        >
+          {translate("createRequest")}
+        </button>
+      </h4>
+
+      <h3
+        className="profileCenter"
+        hidden={user.hasSentRequest ? "" : "hidden"}
+      >
+        {translate("requestInProgress")}
+      </h3>
+      <br></br>
+
+      <div
+        hidden={user?.isAdmin !== true ? "hidden" : ""}
+        style={{ paddingBottom: "100px" }}
+      >
+        <h3 className="profileCenter">
+          {programRequests.length > 0
+            ? translate("programRequests")
+            : translate("dontHaveAnyProgramRequests")}
+        </h3>
+        <figure className="wp-block-table">
+          <table className="has-fixed-layout">
+            <thead>
+              <tr>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("names")}</p>
+                </th>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("email")}</p>
+                </th>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("weight")}</p>
+                </th>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("height")}</p>
+                </th>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("goalHeader")}</p>
+                </th>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("gender")}</p>
+                </th>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("requestDate")}</p>
+                </th>
+                <th className="has-text-align-center" data-align="center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {programRequests?.map((request) => {
+                return (
+                  <tr key={request._id}>
+                    <td className="has-text-align-center" data-align="center">
+                      {request.names}
+                    </td>
+                    <td className="has-text-align-center" data-align="center">
+                      {request.email}
+                    </td>
+                    <td className="has-text-align-center" data-align="center">
+                      {request.weight}
+                    </td>
+
+                    <td className="has-text-align-center" data-align="center">
+                      {request.height}
+                    </td>
+
+                    <td className="has-text-align-center" data-align="center">
+                      {translate(`${request.goal}`)}
+                    </td>
+                    <td className="has-text-align-center" data-align="center">
+                      {translate(`${request.gender}`)}
+                    </td>
+                    <td className="has-text-align-center" data-align="center">
+                      {formatDate(request.date)}
+                    </td>
+
+                    <td className="has-text-align-center" data-align="center">
+                      <button
+                        className="badge badge-success"
+                        onClick={() => onAddNewDiet(request._id)}
+                      >
+                        {translate("addNewDietAndProgram")}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </figure>
+      </div>
+
+      <div
+        hidden={user.diets && user?.isAdmin !== true ? "" : "hidden"}
+        className="items"
+      >
+        <div style={{ paddingBottom: "100px" }}>
+          <br></br>
+          <h3>{translate("dietGymDay")}</h3>
+          <br></br>
+          <figure className="wp-block-table">
+            <table className="has-fixed-layout">
+              <thead>
+                <tr>
+                  <th className="has-text-align-center" data-align="center">
+                    <p>{translate("menu")}</p>
+                  </th>
+                  <th className="has-text-align-center" data-align="center">
+                    <p>{translate("food")}</p>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("breakfast")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietGymDayBreakfast}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("snacking")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietGymDayFirstSnack}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("lunch")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietGymDayLunch}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("snacking")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietGymDaySecondSnack}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("dinner")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietGymDayDinner}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </figure>
+        </div>
+        <div className="right" style={{ paddingBottom: "100px" }}>
+          <br></br>
+          <h3>{translate("dietRestDay")}</h3>
+          <br></br>
+          <figure className="wp-block-table">
+            <table className="has-fixed-layout">
+              <thead>
+                <tr>
+                  <th className="has-text-align-center" data-align="center">
+                    <p>{translate("menu")}</p>
+                  </th>
+                  <th className="has-text-align-center" data-align="center">
+                    <p>{translate("food")}</p>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("breakfast")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietRestDayBreakfast}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("snacking")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietRestDayFirstSnack}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("lunch")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietRestDayLunch}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("snacking")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietRestDaySecondSnack}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="has-text-align-center" data-align="center">
+                    {translate("dinner")}
+                  </td>
+                  <td className="has-text-align-center" data-align="center">
+                    {user?.diets?.dietRestDayDinner}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </figure>
+        </div>
+      </div>
+
+      <div
+        hidden={user.program && user?.isAdmin !== true ? "" : "hidden"}
+        style={{ paddingBottom: "100px" }}
+      >
+        <br></br>
+
+        <h3>{translate("personalProgram")}</h3>
+        <br></br>
+        <figure className="wp-block-table">
+          <table className="has-fixed-layout">
+            <thead>
+              <tr>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("day")}</p>
+                </th>
+                <th className="has-text-align-center" data-align="center">
+                  <p>{translate("muscleGroup")}</p>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("monday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  {currentUser?.program?.monday}
+                </td>
+              </tr>
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("tuesday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  {currentUser?.program?.tuesday}
+                </td>
+              </tr>
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("wednesday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  {currentUser?.program?.wednesday}
+                </td>
+              </tr>
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("thursday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  {currentUser?.program?.thursday}
+                </td>
+              </tr>
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("friday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  {currentUser?.program?.friday}
+                </td>
+              </tr>
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("saturday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  {currentUser?.program?.saturday}
+                </td>
+              </tr>
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("sunday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  {currentUser?.program?.sunday}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+      </div>
+    </div>
+  );
+};
+
+export default ProfileComponent;

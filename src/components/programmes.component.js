@@ -67,7 +67,7 @@ function ProgrammesComponent() {
       <br></br>
       <br></br>
 
-      <h5 className="center">Трениращият винаги може да смени една от тренировките с друга, ако желае да наблегне на определена мускулна група.</h5>
+      <h5 className="center">{translate("theTrainer")}</h5>
       <br></br>
       <br></br>
       <br></br>

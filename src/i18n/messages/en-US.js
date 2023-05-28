@@ -65,9 +65,8 @@ export default {
         "snackingItemHref1.1": "crunchy muesli ",
         "snackingItem1.1.2": "(25 g)",
 
-        //todo
         "snackingItem1.2": "Crunchy bread (40 g), cottage cheese (100 g), carrot (100 g)",
-        "lunchItem1": "Къри с пиле (150 g), олио (5 g), ориз (70 g), зеленчуци на пара (150 g) в олио (5 g)",
+        "lunchItem1": "Chicken curry (150 g), oil (5 g), rice (70 g), steamed vegetables (150 g) in cooking oil (5 g)",
         "dinnerItem": "Pasta (70 g) with tuna in its own sauce (90 g),  tomato sauce (150 g), rapeseed oil (10 g)",
 
         "breakfastItem2.1": "Scrambled eggs (1 egg + 25 g ",
@@ -134,6 +133,44 @@ export default {
         "repeatPassword": "Repeat your password:",
         "signUp": "Sign up",
         "firstName": "First name:",
-        "lastName": "Last name:"
+        "lastName": "Last name:",
+
+        "profile": "Profile",
+        "stillDontHaveAssignedDiet": "You still don't have assigned diet!",
+        "stillDontHaveAssignedProgram": "You still don't have assigned program!",
+        "stillDontHaveAssignedDietAndProgram": "You still don't have assigned diet and program!",
+        "dietRestDay": "Eating in rest day",
+        "dietGymDay": "Eating in gym day",
+        "personalProgram": "Personal program",
+        "day": "Day",
+        "muscleGroup": "Muscle group",
+        "programRequests": "Program requests:",
+        "dontHaveAnyProgramRequests": "There aren't any program requests.",
+        "addNewDietAndProgram": "Add program and diet",
+        "gender": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "createRequest": "Create request for new program and diet",
+        "yourGoal": "Your goal",
+        "activityLevel": "Activity level",
+        "comment": "Additional comment",
+        "lightActivity":"Light activity",
+        "moderateActivity": "Moderate activity",
+        "highActivity": "High activity",
+        "yourWeight": "Your weight",
+        "weightLoss": "Weight loss",
+        "cleaning":"Cleaning fats",
+        "weightGain": "Weight gain",
+        "weight": "Weight",
+        "height": "Height",
+        "create": "Create",
+        "goalHeader": "Goal",
+        "names":"Names",
+        "requestDate": "Request date",
+        "trainingProgram": "Training program",
+        "profileImage":"Profile image",
+        "requestInProgress": "Your request is being processed at the moment!",
+        "personalProgramCreation": "Personal training program and diet creation for the user:"
+
     }
 }
