@@ -76,9 +76,7 @@ const ProfileComponent = () => {
       </div>
       <h4 className="profileCenter">
         <button
-          hidden={
-            !user.diets && !user.hasSentRequest && !user.isAdmin ? "" : "hidden"
-          }
+          hidden={user.hasSentRequest || user.isAdmin ? "hidden" : ""}
           className=""
           onClick={onCreateRequest}
         >
@@ -88,7 +86,7 @@ const ProfileComponent = () => {
 
       <h3
         className="profileCenter"
-        hidden={user.hasSentRequest ? "" : "hidden"}
+        hidden={!user.hasSentRequest ? "hidden" : ""}
       >
         {translate("requestInProgress")}
       </h3>
@@ -103,7 +101,10 @@ const ProfileComponent = () => {
             ? translate("programRequests")
             : translate("dontHaveAnyProgramRequests")}
         </h3>
-        <figure className="wp-block-table">
+        <figure
+          hidden={programRequests.length > 0 && user.isAdmin ? "" : "hidden"}
+          className="wp-block-table"
+        >
           <table className="has-fixed-layout">
             <thead>
               <tr>
@@ -159,12 +160,16 @@ const ProfileComponent = () => {
                       {formatDate(request.date)}
                     </td>
 
-                    <td className="has-text-align-center" data-align="center">
+                    <td
+                      style={{ width: "30%" }}
+                      className="has-text-align-center"
+                      data-align="center"
+                    >
                       <button
                         className="badge badge-success"
                         onClick={() => onAddNewDiet(request._id)}
                       >
-                        {translate("addNewDietAndProgram")}
+                        {translate("create")}
                       </button>
                     </td>
                   </tr>

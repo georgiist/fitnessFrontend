@@ -29,8 +29,6 @@ const AddDietAndProgramComponent = () => {
 
   const navigate = useNavigate();
 
-  const [error, setError] = useState(undefined);
-
   const onChange = (e) => {
     const { name, value } = e.target;
     setNewProgram((prev) => ({ ...prev, [name]: value }));
@@ -136,33 +134,36 @@ const AddDietAndProgramComponent = () => {
       data.saturday === "" ||
       data.sunday === "";
 
+    const language = document.getElementById("languageSelector").value;
+
     if (!hasError) {
       try {
         FitnessService.addNewProgram(data).then((response) => {
           navigate("/profile");
-          alert("Program added successfully");
+          let message;
+          if (language === "ENG") {
+            message = "Program added successfully!";
+          } else {
+            message = "Програмата е добавена успешно!";
+          }
+          alert(message);
         });
       } catch (error) {
         alert(error.response.data.error);
-        setError(error.response.data.error);
       }
     } else {
-      alert("You have not entered the required data!");
+      let error;
+      if (language === "ENG") {
+        error = "You have not entered the required data!";
+      } else {
+        error = "Не сте въвели нужните данни!";
+      }
+      alert(error);
     }
   };
 
   return (
     <div>
-      <div className="buttons">
-        <button onClick={onSave} className="badge badge-danger mr-2">
-          {translate("create")}
-        </button>
-
-        <button onClick={clean} className="badge badge-danger mr-2">
-          {translate("resetBtn")}
-        </button>
-      </div>
-      <br></br>
       <h3>{translate("personalProgramCreation")}</h3>
       <br></br>
       <div className="form-group">
@@ -210,10 +211,10 @@ const AddDietAndProgramComponent = () => {
                 </td>
 
                 <td className="has-text-align-center" data-align="center">
-                  {translate(`${request.goal}`)}
+                  {request.goal ? translate(`${request.goal}`) : ""}
                 </td>
                 <td className="has-text-align-center" data-align="center">
-                  {translate(`${request.gender}`)}
+                  {request.gender ? translate(`${request.gender}`) : ""}
                 </td>
                 <td className="has-text-align-center" data-align="center">
                   {formatDate(request.date)}
@@ -225,7 +226,7 @@ const AddDietAndProgramComponent = () => {
       </div>
       <div style={{ paddingBottom: "100px" }}>
         <br></br>
-        <h3>{translate("dietGymDay")}</h3>
+        <h3>{translate("dietGymDay")}:</h3>
         <br></br>
         <figure className="wp-block-table">
           <table className="has-fixed-layout">
@@ -316,7 +317,7 @@ const AddDietAndProgramComponent = () => {
       </div>
       <div className="right" style={{ paddingBottom: "100px" }}>
         <br></br>
-        <h3>{translate("dietRestDay")}</h3>
+        <h3>{translate("dietRestDay")}:</h3>
         <br></br>
         <figure className="wp-block-table">
           <table className="has-fixed-layout">
@@ -407,7 +408,7 @@ const AddDietAndProgramComponent = () => {
       </div>
       <div style={{ paddingBottom: "100px" }}>
         <br></br>
-        <h3>{translate("trainingProgram")}</h3>
+        <h3>{translate("trainingProgram")}:</h3>
         <br></br>
         <figure className="wp-block-table">
           <table className="has-fixed-layout">
@@ -492,9 +493,49 @@ const AddDietAndProgramComponent = () => {
                   />{" "}
                 </td>
               </tr>
+
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("saturday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="saturday"
+                    name="saturday"
+                    onChange={onChange}
+                  />{" "}
+                </td>
+              </tr>
+
+              <tr>
+                <td className="has-text-align-center" data-align="center">
+                  {translate("sunday")}
+                </td>
+                <td className="has-text-align-center" data-align="center">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="sunday"
+                    name="sunday"
+                    onChange={onChange}
+                  />{" "}
+                </td>
+              </tr>
             </tbody>
           </table>
         </figure>
+      </div>
+
+      <div style={{ marginBottom: "50px" }} className="buttons">
+        <button onClick={onSave} className="badge badge-success mr-2">
+          {translate("create")}
+        </button>
+
+        <button onClick={clean} className="badge badge-danger mr-2">
+          {translate("resetBtn")}
+        </button>
       </div>
     </div>
   );

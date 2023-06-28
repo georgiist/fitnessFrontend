@@ -35,19 +35,22 @@ const LoginComponent = () => {
     };
 
     const hasError = data.email === "" || data.password === "";
+    const language = document.getElementById("languageSelector").value;
 
-    hasError
-      ? setError("You have not entered the required data!")
-      : setError(undefined);
+    let error;
+    if (language === "ENG") {
+      error = "You have not entered the required data!";
+    } else {
+      error = "Не сте въвели нужните данни!";
+    }
+    hasError ? setError(error) : setError(undefined);
     if (!hasError) {
       try {
         await login(data);
         navigate("/profile");
-        // setError(undefined);
+        setError(undefined);
       } catch (error) {
-        console.log(error);
-        // alert(error.response.data.error);
-        // setError(error.response.data.error);
+        setError(error.response.data.error);
       }
     }
   };
@@ -93,7 +96,7 @@ const LoginComponent = () => {
             <p>{error}</p>
           </div>
           <div className="buttons">
-            <button onClick={onLogin}  className="badge badge-danger mr-2">
+            <button onClick={onLogin} className="badge badge-danger mr-2">
               {translate("login")}
             </button>
 

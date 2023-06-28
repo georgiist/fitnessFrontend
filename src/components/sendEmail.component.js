@@ -55,12 +55,24 @@ const SendEmailComponent = () => {
             this.setState({
               loading: false,
             });
-            alert("Email sent successfully");
+            let message;
+            if (language === "ENG") {
+              message = "The email is sent successfully!";
+            } else {
+              message = "Имейлът е изпратен успешно!";
+            }
+            alert(message);
           })
         );
       }
     } else {
-      alert("You have not entered everything!");
+      let error;
+      if (language === "ENG") {
+        error = "You have not entered the required data!";
+      } else {
+        error = "Не сте въвели нужните данни!";
+      }
+      alert(error);
     }
   };
 

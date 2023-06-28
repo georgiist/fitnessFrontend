@@ -67,6 +67,7 @@ const SignUpComponent = () => {
       gender: newUser.gender,
       profileImage: newUser.profileImage,
     };
+    const language = document.getElementById("languageSelector").value;
 
     if (
       data.email !== "" &&
@@ -81,17 +82,35 @@ const SignUpComponent = () => {
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         )
       ) {
-        alert("Wrong email format!");
+        let error;
+        if (language === "ENG") {
+          error = "Wrong email format!";
+        } else {
+          error = "Невалиден формат на имейла!";
+        }
+        alert(error);
       } else {
         if (data.password === data.repeatedPassword) {
           await signUp(data);
           navigate("/login");
         } else {
-          alert("Passwords are not equal!");
+          let error;
+          if (language === "ENG") {
+            error = "The passwords are not equal!";
+          } else {
+            error = "Паролите не са еднакви!";
+          }
+          alert(error);
         }
       }
     } else {
-      alert("You have not entered everything!");
+      let error;
+      if (language === "ENG") {
+        error = "You have not entered the required data!";
+      } else {
+        error = "Не сте въвели нужните данни!";
+      }
+      alert(error);
     }
   };
 

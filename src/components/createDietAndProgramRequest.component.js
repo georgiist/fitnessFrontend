@@ -19,8 +19,6 @@ const CreateDietAndProgramRequestComponent = () => {
   });
   const navigate = useNavigate();
 
-  const [error, setError] = useState(undefined);
-
   const onChange = (e) => {
     const { name, value } = e.target;
     setRequest((prev) => ({ ...prev, [name]: value }));
@@ -80,34 +78,58 @@ const CreateDietAndProgramRequestComponent = () => {
       data.weight === "" ||
       data.height === "";
 
+    const language = document.getElementById("languageSelector").value;
+
     if (!hasError) {
       if (data.measure === "metres") {
-        if (data.height > 3) {
+        if (data.height > 2.5) {
           isValid = false;
-          alert("Не сте въвели вярна височина");
+          let error;
+          if (language === "ENG") {
+            error = "You have not enterd valid height!";
+          } else {
+            error = "Не сте въвели вярна височина!";
+          }
+          alert(error);
         } else {
           data.height = data.height * 100;
         }
       } else {
-        if (data.height > 300 || data.height < 50) {
+        if (data.height > 250 || data.height < 50) {
           isValid = false;
-          alert("Не сте въвели вярна височина");
+          let error;
+          if (language === "ENG") {
+            error = "You have not enterd valid height!";
+          } else {
+            error = "Не сте въвели вярна височина!";
+          }
+          alert(error);
         }
       }
       if (isValid) {
         try {
           FitnessService.createRequest(data).then((response) => {
             navigate("/profile");
-            alert("Request created successfully");
+            let message;
+            if (language === "ENG") {
+              message = "The request has been sent successfully!";
+            } else {
+              message = "Заявката е изпратена успешно!";
+            }
+            alert(message);
           });
         } catch (error) {
           alert(error.response.data.error);
-          setError(error.response.data.error);
         }
       }
     } else {
-      console.log(data);
-      alert("You have not entered the required data!");
+      let error;
+      if (language === "ENG") {
+        error = "You have not entered the required data!";
+      } else {
+        error = "Не сте въвели нужните данни!";
+      }
+      alert(error);
     }
   };
 
@@ -187,13 +209,6 @@ const CreateDietAndProgramRequestComponent = () => {
 
         <div className="form-group">
           <label htmlFor="height">{translate("height")}:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="height"
-            name="height"
-            onChange={onChange}
-          />
           <Select
             className="form-group"
             options={[
@@ -207,6 +222,13 @@ const CreateDietAndProgramRequestComponent = () => {
               },
             ]}
             onChange={onChangeMeasure}
+          />
+          <input
+            type="text"
+            className="form-control"
+            id="height"
+            name="height"
+            onChange={onChange}
           />
         </div>
 
