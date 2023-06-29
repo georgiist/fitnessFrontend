@@ -76,7 +76,7 @@ const ProfileComponent = () => {
       </div>
       <h4 className="profileCenter">
         <button
-          hidden={user.hasSentRequest || user.isAdmin ? "hidden" : ""}
+          hidden={user.hasSentRequest || user.diets || user.isAdmin ? "hidden" : ""}
           className=""
           onClick={onCreateRequest}
         >
@@ -310,10 +310,10 @@ const ProfileComponent = () => {
 
       <div
         hidden={user.program && user?.isAdmin !== true ? "" : "hidden"}
+        className="right"
         style={{ paddingBottom: "100px" }}
       >
         <br></br>
-
         <h3>{translate("personalProgram")}</h3>
         <br></br>
         <figure className="wp-block-table">
