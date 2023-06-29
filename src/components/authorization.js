@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import http from "../http-common";
-export const AuthContext = createContext();
+export const Authorization = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
@@ -25,8 +25,8 @@ export const AuthContextProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, signUp }}>
+    <Authorization.Provider value={{ currentUser, login, logout, signUp }}>
       {children}
-    </AuthContext.Provider>
+    </Authorization.Provider>
   );
 };

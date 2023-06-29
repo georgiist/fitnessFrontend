@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import translate from "../i18n/translate";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+import { Authorization } from "./authorization";
 
 const SignUpComponent = () => {
   const [newUser, setNewUser] = useState({
@@ -15,8 +15,7 @@ const SignUpComponent = () => {
   });
   const navigate = useNavigate();
 
-  const { signUp } = useContext(AuthContext);
-  // const [error, setError] = useState(undefined);
+  const { signUp } = useContext(Authorization);
 
   const onChange = (e) => {
     const { name, value } = e.target;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import translate from "../i18n/translate";
-import { AuthContext } from "./AuthContext";
+import { Authorization } from "./authorization";
 import { useNavigate } from "react-router-dom";
 import FitnessService from "../services/fitness.service";
 import profileIcon from "../../src/profileIcon.jpeg";
 const ProfileComponent = () => {
-  const { currentUser, logout } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(Authorization);
 
   const [user, setUser] = useState({});
   const [programRequests, setProgramRequests] = useState([]);

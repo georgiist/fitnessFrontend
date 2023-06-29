@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 import FitnessService from "../services/fitness.service";
-import { AuthContext } from "./AuthContext";
+import { Authorization } from "./authorization";
 import translate from "../i18n/translate";
-import { trackPromise } from "react-promise-tracker";
 
 const SendEmailComponent = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(Authorization);
 
   const [currentEmail, setCurrentEmail] = useState({
     subject: "",
@@ -35,7 +34,6 @@ const SendEmailComponent = () => {
       sender: currentUser?.email || currentEmail.sender,
     };
 
-    console.log(data);
     if (data.subject !== "" && data.text !== "" && data.sender !== "") {
       if (
         !data.sender.match(
@@ -50,20 +48,16 @@ const SendEmailComponent = () => {
         }
         alert(error);
       } else {
-        trackPromise(
-          FitnessService.sendEmail(data).then((response) => {
-            this.setState({
-              loading: false,
-            });
-            let message;
-            if (language === "ENG") {
-              message = "The email is sent successfully!";
-            } else {
-              message = "Имейлът е изпратен успешно!";
-            }
-            alert(message);
-          })
-        );
+        FitnessService.sendEmail(data).then((response) => {
+          let message;
+          if (language === "ENG") {
+            message = "The email is sent successfully!";
+          } else {
+            message = "Имейлът е изпратен успешно!";
+          }
+          clean();
+          alert(message);
+        });
       }
     } else {
       let error;

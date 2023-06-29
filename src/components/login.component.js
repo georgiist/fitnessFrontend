@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import translate from "../i18n/translate";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+import { Authorization } from "./authorization";
 
 const LoginComponent = () => {
   const [profile, setProfile] = useState({
@@ -10,7 +10,7 @@ const LoginComponent = () => {
   });
   const navigate = useNavigate();
 
-  const { login } = useContext(AuthContext);
+  const { login } = useContext(Authorization);
   const [error, setError] = useState(undefined);
 
   const onChange = (e) => {

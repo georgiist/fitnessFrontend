@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import translate from "../i18n/translate";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+import { Authorization } from "./authorization";
 import FitnessService from "../services/fitness.service";
 import Select from "react-select";
 
 const CreateDietAndProgramRequestComponent = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(Authorization);
 
   const [request, setRequest] = useState({
     comment: "",

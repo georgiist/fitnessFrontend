@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { AuthContext } from "./components/AuthContext";
+import { Authorization } from "./components/authorization";
 
 import HomeComponent from "./components/home.component";
 import DietsComponent from "./components/diets.component";
@@ -20,7 +20,7 @@ import CreateDietAndProgramRequestComponent from "./components/createDietAndProg
 
 function App() {
   const [locale, setLocale] = useState(LOCALES.BULGARIAN);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(Authorization);
 
   function onChangeLanuage(e) {
     let language = document.getElementById("languageSelector").value;
