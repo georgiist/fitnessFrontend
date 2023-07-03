@@ -117,7 +117,7 @@ function App() {
             />
           </Routes>
         </div>
-        <div className="footer bg-dark">&copy; {translate("footerText")}</div>
+        <div style={{height:"20px"}} className="footer bg-dark"></div>
       </div>
     </I18nProvider>
   );

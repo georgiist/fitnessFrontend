@@ -114,7 +114,7 @@ const SignUpComponent = () => {
   };
 
   return (
-    <div className="edit-form">
+    <div className="edit-form" style={{ marginBottom: "200px" }}>
       <form>
         <div>
           <label>{translate("profileImage")}:</label>
@@ -139,6 +139,7 @@ const SignUpComponent = () => {
         <div className="form-group">
           <label htmlFor="firstName">{translate("firstName")} </label>
           <input
+            autocomplete="off"
             type="text"
             className="form-control"
             id="firstName"
@@ -150,6 +151,7 @@ const SignUpComponent = () => {
         <div className="form-group">
           <label htmlFor="lastName">{translate("lastName")} </label>
           <input
+            autocomplete="off"
             type="text"
             className="form-control"
             id="lastName"
@@ -161,6 +163,7 @@ const SignUpComponent = () => {
         <div className="form-group">
           <label htmlFor="email">{translate("email")}</label>
           <input
+            autocomplete="off"
             type="text"
             className="form-control"
             id="email"

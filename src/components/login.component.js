@@ -62,6 +62,7 @@ const LoginComponent = () => {
         <div className="form-group">
           <label htmlFor="title">{translate("emailSenderTitle")}</label>
           <input
+            autocomplete="off"
             type="text"
             className="form-control"
             id="email"
